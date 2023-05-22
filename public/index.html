@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+      #textwrap {
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 1);
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      #myTextarea {
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="textwrap">
+      <textarea id="myTextarea"></textarea>
+      <button onclick="sendData()">전송</button>
+      <button onclick="changeData()">변경</button>
+    </div>
+    <script>
+      const sendData = function () {
+        const textarea = document.getElementById('myTextarea').value;
+        const data = { data: textarea };
+
+        fetch('http://localhost:3000/api/test', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => {
+            // 응답
+          })
+          .catch((error) => {
+            // 에러
+          });
+      };
+
+      const changeData = function () {
+        const textarea = document.getElementById('myTextarea');
+        const selectionStart = textarea.selectionStart;
+        const selectionEnd = textarea.selectionEnd;
+        const selectionText = textarea.value.substring(
+          selectionStart,
+          selectionEnd
+        );
+        console.log(selectionText);
+      };
+    </script>
+  </body>
+</html>
