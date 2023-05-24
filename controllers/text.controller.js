@@ -45,8 +45,11 @@ class TextController {
       .extractRawText({ buffer })
       .then((result) => {
         const text = result.value; // 추출된 텍스트
-        console.log(text);
-        res.status(200).json({ parsingData: text });
+        // 표 시작 부분으로 텍스트를 나누어 표 추출
+        const tables = text.split('[표 시작]');
+        console.log('text', text);
+        console.log('tables', tables);
+        res.status(200).json({ parsingData: tables });
       })
       .catch((error) => {
         console.error(error);
