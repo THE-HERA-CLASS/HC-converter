@@ -33,7 +33,6 @@
       max-width: 900px;
       height: 80px;
       border: 0px solid;
-      margin-bottom: 20px;
       text-align: center;
       line-height: 40px;
       font-size: 1.6em;
@@ -71,7 +70,8 @@
   <div id="textwrap">
     <h1 id="h1-title"> Editor Value Submit Test Page </h1>
     <textarea id="myExamId" placeholder="exam_id"></textarea>
-    <button class="btn-send" onclick="inputImage()">이미지</button>
+    <button class="btn-send" onclick="inputExample()" accesskey="1">보기문 삽입 (<u>1</u>)</button>
+    <button class="btn-send" onclick="inputImage()" accesskey="2">이미지 삽입 (<u>2</u>)</button>
     <textarea id="myTxtArea"></textarea>
     <button class="btn-send" onclick="changeData()">문제 파싱</button>
     <textarea id="myTxtResult"></textarea>
@@ -79,9 +79,41 @@
     <!-- <button onclick="example_list_bar()">보기문: 리스트(-)</button> -->
   </div>
   <script>
+    const inputExample = () => {
+      // myTxtArea 요소 가져오기
+      const myTxtArea = document.getElementById('myTxtArea');
+      // myTxtArea 값 가져오기
+      const myTxtAreaValue = myTxtArea.value;
+      // myTxtArea에서 선택한 블록값 가져오기
+      const selectionStart = myTxtArea.selectionStart;
+      const selectionEnd = myTxtArea.selectionEnd;
+      let selectionText = myTxtArea.value.substring(
+        selectionStart,
+        selectionEnd
+      );
+      // console.log(selectionStart, selectionEnd);
+      selectionText = selectionText.replace(/^\s+|\s+$/g, '');
+      // console.log('selectionText: ', selectionText);
+      // ----------------------------------------
+      // 대체텍스트 생성
+      // const newText = `/보기문\n${selectionText}`;
+      const exampleText = `/보기문`;
+      // 대체텍스트로 대체
+      // console.log('newText: ', newText);
+      // const replacedText = myTxtAreaValue.replace(selectionText, newText);
+      // myTxtArea에 대체된 값으로 변경
+      // myTxtArea.value = replacedText;
+      // 대체텍스트를 selectionStart 위치에 삽입
+      const newText = myTxtAreaValue.slice(0, selectionStart) + exampleText + myTxtAreaValue.slice(selectionStart);
+
+      // myTxtArea에 대체된 값으로 변경
+      myTxtArea.value = newText;
+    };
+
+
     let data = {};
     const changeData = async () => {
-      // #myTextarea 요소 가져오기
+      // #myTxtArea 요소 가져오기
       const txtArea = document.getElementById('myTxtArea');
 
       // #myResult 요소 가져오기
@@ -92,7 +124,7 @@
 
       const exam_id = Number(txtExamId.value);
 
-      // textarea 값 가져오기
+      // myTxtArea 값 가져오기
       const txtAreaValue = txtArea.value;
 
       // txtAreaValue ``` 기준으로 배열화
@@ -251,9 +283,7 @@
     };
 
 
-    const sendData = function () {
-      // const textarea = document.getElementById('myTextarea').value;
-      // const data = { data: textarea };
+    const sendData = () => {
       console.log(data);
 
       fetch('http://localhost:3001/api/addQuestionsEditor', {
@@ -272,15 +302,15 @@
         });
     };
 
-    // const changeData = function () {
-    //   // textarea 요소 가져오기
-    //   const textarea = document.getElementById('myTextarea');
-    //   // textarea 값 가져오기
-    //   const textareaValue = textarea.value;
-    //   // textarea에서 선택한 블록값 가져오기
-    //   const selectionStart = textarea.selectionStart;
-    //   const selectionEnd = textarea.selectionEnd;
-    //   let selectionText = textarea.value.substring(
+    // const changeData = () => {
+    //   // myTxtArea 요소 가져오기
+    //   const myTxtArea = document.getElementById('myTxtArea');
+    //   // myTxtArea 값 가져오기
+    //   const myTxtAreaValue = myTxtArea.value;
+    //   // myTxtArea에서 선택한 블록값 가져오기
+    //   const selectionStart = myTxtArea.selectionStart;
+    //   const selectionEnd = myTxtArea.selectionEnd;
+    //   let selectionText = myTxtArea.value.substring(
     //     selectionStart,
     //     selectionEnd
     //   );
@@ -292,9 +322,9 @@
     //   const newText = `/보기문\n${selectionText}`;
     //   // 대체텍스트로 대체
     //   console.log('newText: ', newText);
-    //   const replacedText = textareaValue.replace(selectionText, newText);
-    //   // textarea에 대체된 값으로 변경
-    //   textarea.value = replacedText;
+    //   const replacedText = myTxtAreaValue.replace(selectionText, newText);
+    //   // myTxtArea에 대체된 값으로 변경
+    //   myTxtArea.value = replacedText;
     // };
   </script>
 </body>
