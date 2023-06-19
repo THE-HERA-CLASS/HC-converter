@@ -4,8 +4,8 @@ class TextController {
 
   addQuestionsEditor = async (req, res) => {
     try {
-      let { exam_id, data } = req.body;
-      const result = await this.textService.addQuestionsEditor(exam_id, data);
+      let { data } = req.body;
+      const result = await this.textService.addQuestionsEditor(data);
       return res.status(200).json({ data: result.addQuestionData });
     } catch (err) {
       console.error(err);

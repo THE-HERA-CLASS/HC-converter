@@ -1,12 +1,12 @@
 const { Questions } = require('../models');
 
 class TextRepository {
-  addQuestionsEditor = async (exam_id, data) => {
+  addQuestionsEditor = async (data) => {
     try {
       // DB Create
       await data.forEach((question) => {
         return Questions.create({
-          exam_id,
+          exam_id: question.exam_id,
           sort_num: question.sort_num,
           question_num: question.question_num,
           question: question.question,
